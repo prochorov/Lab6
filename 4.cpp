@@ -58,7 +58,7 @@ template <size_t N> superlong<N>::superlong(const string & s) {
 		i++;
 	}
 }
-template <size_t N> superlong<N>& superlong<N> :: operator=(const superlong<N>& s)
+template <size_t N> superlong<N>& superlong<N> :: operator=(const superlong<N>& s)
 {
 	value = s.value;
 	return *this;
