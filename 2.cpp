@@ -1,98 +1,69 @@
 #include <iostream>
-using namespace std;
-template <typename T> class Rectangle
-{
-private:
-	T h = T();
-	T a = T();
+#include <vector>
+
+class Rectangle {
 public:
-	Rectangle() {};
-	Rectangle(T x, T y)
-	{
-		h = x;
-		a = y;
-	}
-	bool operator> (const Rectangle x)
-	{
-		return (h * a > x.h * x.a);
-	}
-	friend ostream& operator<< (ostream& outputStream, Rectangle x) {
-		return outputStream << x.h * x.a;
-	}
+    Rectangle(double h, double w) : height(h), width(w) {}
+    double get_height() const { return height; }
+    double get_width() const { return width; }
+    double get_area() const { return height * width; }
+    bool operator<(const Rectangle& other) const { return get_area() < other.get_area(); }
+private:
+    double height, width;
 };
-void Comparison(int s[])
-{
-	for (int i = 0; i < 3; i++)
-	{
-		if (s[i] > s[i + 1])
-		{
-			cout << "Больше";
-		}
-		else if (s[i] < s[i + 1])
-		{
-			cout << "Меньше";
-		}
-	}
+
+
+template <typename T>
+void merge_sort(std::vector<T>& arr) {
+    if (arr.size() <= 1) {
+        return;
+    }
+
+    std::vector<T> left, right;
+    int mid = arr.size() / 2;
+
+    for (int i = 0; i < mid; ++i) {
+        left.push_back(arr[i]);
+    }
+
+    for (int i = mid; i < arr.size(); ++i) {
+        right.push_back(arr[i]);
+    }
+
+    merge_sort(left);
+    merge_sort(right);
+
+    int i = 0, j = 0, k = 0;
+
+    while (i < left.size() && j < right.size()) {
+        if (left[i] < right[j]) {
+            arr[k] = left[i];
+            ++i;
+        } else {
+            arr[k] = right[j];
+            ++j;
+        }
+        ++k;
+    }
+
+    while (i < left.size()) {
+        arr[k] = left[i];
+        ++i;
+        ++k;
+    }
+
+    while (j < right.size()) {
+        arr[k] = right[j];
+        ++j;
+        ++k;
+    }
 }
-template <typename T> void Bubble(T* arr, int size) {
-	for (int i = size - 1; i >= 1; i--)
-	{
-		for (int j = 0; j < i; j++)
-		{
-			if (arr[j] > arr[j + 1])
-			{
-				T t = arr[j];
-				arr[j] = arr[j + 1];
-				arr[j + 1] = t;
-			}
-		}
-	}
-}
-int main()
-{
-	setlocale(LC_ALL, "Russian");
-	int x = 12, y = 54;
-	double a = 2.28, b = 1.4156;
-	Rectangle <int> arr[3];
-	Rectangle <double> buf[3];
-	cout << "Cравнение значений: " << endl;
-	for (int i = 0; i < 3; i++)
-	{
-		Rectangle <int> r(x - i, y);
-		arr[i] = r;
-		if (arr[i] > arr[i + 1])
-		{
-			cout << "Больше" << endl;
-		}
-		else {
-			cout << "Меньше" << endl;
-		}
-		Rectangle <double> f(a - i, b);
-		buf[i] = f;
-	}
-	cout << "Массив до сортировки типа int: "; for
-		(int i = 0; i < 3; i++)
-	{
-		cout << arr[i] << " ";
-	}
-	Bubble(arr, 3);
-	cout << "\nМассив после сортировки: ";
-	for (int i = 0; i < 3; i++)
-	{
-		cout << arr[i] << " ";
-	}
-	cout << endl;
-	cout << "Массив до сортировки типа double: "; for
-		(int i = 0; i < 3; i++)
-	{
-		cout << buf[i] << " ";
-	}
-	Bubble(buf, 3);
-	cout << "\nМассив после сортировки: ";
-	for (int i = 0; i < 3; i++)
-	{
-		cout << buf[i] << " ";
-	}
-	cout << endl;
-	return 0;
+
+int main() {
+    std::vector<Rectangle> arr = {Rectangle(2.0, 3.0), Rectangle(1.0, 5.0), Rectangle(4.0, 2.0), Rectangle(3.0, 4.0)};
+    merge_sort(arr);
+    for (const Rectangle& rect : arr) {
+        std::cout << "height: " << rect.get_height() << ", width: " << rect.get_width() << ", area: " << rect.get_area() << std::endl;
+    }
+    return 0;
 }
